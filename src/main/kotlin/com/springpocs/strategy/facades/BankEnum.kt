@@ -1,4 +1,4 @@
-package com.strategypoc.strategy.facades
+package com.springpocs.strategy.facades
 
 enum class BankEnum {
     BANK1, BANK2

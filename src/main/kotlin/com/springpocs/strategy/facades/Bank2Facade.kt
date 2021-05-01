@@ -1,4 +1,4 @@
-package com.strategypoc.strategy.facades
+package com.springpocs.strategy.facades
 
 class Bank2Facade : BankFacadeInterface {
     override val name: BankEnum = BankEnum.BANK2

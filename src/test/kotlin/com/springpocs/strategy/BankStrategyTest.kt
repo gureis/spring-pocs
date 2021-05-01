@@ -1,6 +1,6 @@
-package com.strategypoc.strategy
+package com.springpocs.strategy
 
-import com.strategypoc.strategy.facades.BankEnum
+import com.springpocs.strategy.facades.BankEnum
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

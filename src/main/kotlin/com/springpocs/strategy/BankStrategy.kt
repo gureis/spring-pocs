@@ -1,7 +1,7 @@
-package com.strategypoc.strategy
+package com.springpocs.strategy
 
-import com.strategypoc.strategy.facades.BankEnum
-import com.strategypoc.strategy.facades.BankFacadeInterface
+import com.springpocs.strategy.facades.BankEnum
+import com.springpocs.strategy.facades.BankFacadeInterface
 import org.springframework.stereotype.Component
 import java.lang.Exception
 

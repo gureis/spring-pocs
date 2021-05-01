@@ -1,4 +1,4 @@
-package com.strategypoc.strategy.facades
+package com.springpocs.strategy.facades
 
 interface BankFacadeInterface {
     val name: BankEnum
