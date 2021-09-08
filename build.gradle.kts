@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
