@@ -1,1 +1,1 @@
-rootProject.name = "strategypoc"
+rootProject.name = "springpocs"
