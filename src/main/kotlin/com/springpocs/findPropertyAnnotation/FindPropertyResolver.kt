@@ -19,24 +19,34 @@ class FindPropertyResolver : HandlerInterceptor {
     ): Boolean {
         if (handler is HandlerMethod) {
             val method = handler.method
-            val annotation = method.getAnnotation(FindProperty::class.java)
+            val annotation = method.getAnnotation(FindProperty::class.java) ?: return true
 
-            if (annotation != null) {
-                val propertyName = '/' + annotation.propertyPattern.replace('.', '/')
-
-                val body = getRequestBody(request)
-
-                val property = getPropertyFromRequestBody(body, propertyName)
-
-                if (property != "0000342") {
-                    response.status = HttpStatus.FORBIDDEN.value()
-                    response.contentType = MediaType.APPLICATION_JSON_VALUE
-                    response.characterEncoding = "UTF-8"
-                    response.writer.write("""{"message":"can't do"}""")
-
-                    return false
-                }
+            if (annotation.where == WhereToFindProperty.BODY) {
+                return findByBody(request, response, annotation)
             }
+        }
+
+        return true
+    }
+
+    private fun findByBody(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        annotation: FindProperty
+    ): Boolean {
+        val propertyName = '/' + annotation.propertyPattern.replace('.', '/')
+
+        val body = getRequestBody(request)
+
+        val property = getPropertyFromRequestBody(body, propertyName)
+
+        if (property != "0000342") {
+            response.status = HttpStatus.FORBIDDEN.value()
+            response.contentType = MediaType.APPLICATION_JSON_VALUE
+            response.characterEncoding = "UTF-8"
+            response.writer.write("""{"message":"can't do"}""")
+
+            return false
         }
 
         return true
