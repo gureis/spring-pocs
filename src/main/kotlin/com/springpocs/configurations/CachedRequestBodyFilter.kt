@@ -1,4 +1,4 @@
-package com.springpocs.findPropertyAnnotation
+package com.springpocs.configurations
 
 import org.springframework.stereotype.Component
 import org.springframework.util.StreamUtils
