@@ -6,6 +6,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
+import org.springframework.web.servlet.HandlerMapping
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -21,8 +22,10 @@ class FindPropertyResolver : HandlerInterceptor {
             val method = handler.method
             val annotation = method.getAnnotation(FindProperty::class.java) ?: return true
 
-            if (annotation.where == WhereToFindProperty.BODY) {
-                return findByBody(request, response, annotation)
+            return when (annotation.where) {
+                WhereToFindProperty.BODY -> findByBody(request, response, annotation)
+                WhereToFindProperty.REQUEST_PARAM -> findByRequestParam(request, response, annotation)
+                WhereToFindProperty.PATH_PARAM -> findByPathParam(request, response, annotation)
             }
         }
 
@@ -41,6 +44,44 @@ class FindPropertyResolver : HandlerInterceptor {
         val property = getPropertyFromRequestBody(body, propertyName)
 
         if (property != "0000342") {
+            response.status = HttpStatus.FORBIDDEN.value()
+            response.contentType = MediaType.APPLICATION_JSON_VALUE
+            response.characterEncoding = "UTF-8"
+            response.writer.write("""{"message":"can't do"}""")
+
+            return false
+        }
+
+        return true
+    }
+
+    private fun findByRequestParam(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        annotation: FindProperty
+    ): Boolean {
+        val requestParam = request.getParameter(annotation.propertyPattern)
+
+        if (requestParam != "0000342") {
+            response.status = HttpStatus.FORBIDDEN.value()
+            response.contentType = MediaType.APPLICATION_JSON_VALUE
+            response.characterEncoding = "UTF-8"
+            response.writer.write("""{"message":"can't do"}""")
+
+            return false
+        }
+
+        return true
+    }
+
+    private fun findByPathParam(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        annotation: FindProperty
+    ): Boolean {
+        val pathParams = request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
+
+        if (pathParams[annotation.propertyPattern] != "joão") {
             response.status = HttpStatus.FORBIDDEN.value()
             response.contentType = MediaType.APPLICATION_JSON_VALUE
             response.characterEncoding = "UTF-8"
